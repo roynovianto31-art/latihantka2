@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulasi TKA Sosiologi 2026</title>
+<style>
+:root{--navy:#1e3a8a;--blue:#2563eb;--sky:#dbeafe;--bg:#f1f5f9;--card:#fff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--ok:#16a34a;--okbg:#dcfce7;--bad:#dc2626;--badbg:#fee2e2;--warn:#f59e0b;--warnbg:#fef3c7}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+/* start */
+.start{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#60a5fa)}
+.start-card{background:#fff;border-radius:20px;max-width:760px;width:100%;padding:34px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.badge{display:inline-block;background:var(--sky);color:var(--navy);font-weight:700;font-size:12px;letter-spacing:.08em;padding:4px 12px;border-radius:99px}
+.start-card h1{margin:12px 0 4px;font-size:30px;color:var(--navy)}
+.start-card p.sub{margin:0 0 20px;color:var(--muted)}
+.info{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.info div{background:var(--bg);border-radius:12px;padding:12px;text-align:center}
+.info b{display:block;font-size:22px;color:var(--navy)}
+.info span{font-size:12px;color:var(--muted)}
+.rules{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:14px;margin-bottom:20px}
+.rules h3{margin:0 0 6px;font-size:15px;color:var(--navy)}
+.rules ul{margin:0;padding-left:18px}
+.start-card input[type=text]{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:10px;font-size:16px;margin-bottom:14px}
+.start-card input[type=text]:focus{outline:none;border-color:var(--blue)}
+.btn{border:0;border-radius:10px;padding:12px 22px;font-weight:600;font-size:15px;transition:.15s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--navy)}
+.btn-ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}.btn-ghost:hover{border-color:var(--blue)}
+.btn-warn{background:var(--warnbg);color:#92400e;border:2px solid var(--warn)}
+.btn-danger{background:var(--bad);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.big{width:100%;padding:15px;font-size:17px}
+/* exam */
+.topbar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.topbar .t{font-weight:700}
+.topbar small{display:block;opacity:.75;font-weight:400}
+.timer{background:rgba(255,255,255,.15);padding:8px 16px;border-radius:10px;font-variant-numeric:tabular-nums;font-weight:700;font-size:20px}
+.timer.low{background:var(--bad);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.6}}
+.progress{height:5px;background:#93c5fd}.progress i{display:block;height:100%;background:#fff;width:0;transition:.3s}
+.layout{max-width:1180px;margin:20px auto;padding:0 16px;display:grid;grid-template-columns:1fr 290px;gap:20px;align-items:start}
+.qcard{background:var(--card);border-radius:16px;padding:26px;box-shadow:0 2px 12px rgba(15,23,42,.06)}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.qno{font-weight:800;color:var(--navy);font-size:18px}
+.chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--sky);color:var(--navy);margin-left:8px}
+.chip.m{background:#ede9fe;color:#5b21b6}.chip.k{background:#fce7f3;color:#9d174d}
+.stim{background:#f8fafc;border-left:4px solid var(--blue);padding:14px 16px;border-radius:0 10px 10px 0;margin-bottom:16px;font-size:14.5px;max-height:260px;overflow:auto}
+.stim b.l{display:block;color:var(--navy);margin-bottom:6px;font-size:13px;letter-spacing:.04em}
+.qtext{font-size:16.5px;margin-bottom:8px}
+.instr{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:12px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:2px solid var(--line);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:.12s;background:#fff;width:100%;text-align:left;font-size:15.5px;color:var(--ink)}
+.opt:hover{border-color:#93c5fd;background:#f8fbff}
+.opt .k{flex:none;width:30px;height:30px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.opt.sel{border-color:var(--blue);background:var(--sky)}.opt.sel .k{background:var(--blue);color:#fff}
+.opt.right{border-color:var(--ok);background:var(--okbg)}.opt.right .k{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}.opt.wrong .k{background:var(--bad);color:#fff}
+.opt.static{cursor:default}
+table.cat{width:100%;border-collapse:collapse;font-size:15px}
+table.cat th{background:var(--navy);color:#fff;padding:10px;font-size:13px}
+table.cat th:first-child{border-radius:10px 0 0 0;width:34px}table.cat th:last-child{border-radius:0 10px 0 0}
+table.cat td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.cat td.c{text-align:center;width:104px}
+.radio{width:26px;height:26px;border-radius:50%;border:2px solid #94a3b8;background:#fff;display:inline-block;vertical-align:middle;position:relative}
+.radio.on{border-color:var(--blue)}.radio.on::after{content:"";position:absolute;inset:4px;background:var(--blue);border-radius:50%}
+.radio.right{border-color:var(--ok)}.radio.right::after{content:"";position:absolute;inset:4px;background:var(--ok);border-radius:50%}
+.radio.wrong{border-color:var(--bad)}.radio.wrong::after{content:"";position:absolute;inset:4px;background:var(--bad);border-radius:50%}
+.radio.key{border-color:var(--ok);box-shadow:0 0 0 3px var(--okbg)}
+td.c button{background:none;border:0;padding:4px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.side{position:sticky;top:78px;display:flex;flex-direction:column;gap:14px}
+.panel{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(15,23,42,.06)}
+.panel h4{margin:0 0 10px;font-size:14px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.gb{aspect-ratio:1;border:2px solid var(--line);background:#fff;border-radius:9px;font-weight:700;font-size:14px;position:relative;color:var(--ink)}
+.gb.ans{background:var(--blue);border-color:var(--blue);color:#fff}
+.gb.flag{background:var(--warn);border-color:var(--warn);color:#fff}
+.gb.cur{outline:3px solid var(--navy);outline-offset:1px}
+.gb.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.gb.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.gb.skip{background:#94a3b8;border-color:#94a3b8;color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:12px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1px solid var(--line)}
+.stat{font-size:13px;display:flex;justify-content:space-between;padding:4px 0}
+/* result */
+.result{max-width:1000px;margin:24px auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:20px;padding:30px;text-align:center;box-shadow:0 10px 30px rgba(30,58,138,.3)}
+.score{font-size:76px;font-weight:800;line-height:1}
+.score small{font-size:28px;opacity:.7}
+.grade{display:inline-block;background:rgba(255,255,255,.2);padding:6px 18px;border-radius:99px;font-weight:700;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stats div{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(15,23,42,.06)}
+.stats b{display:block;font-size:26px}
+.stats span{font-size:12px;color:var(--muted)}
+.box{background:#fff;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 2px 10px rgba(15,23,42,.06)}
+.box h3{margin:0 0 12px;color:var(--navy)}
+table.rub{width:100%;border-collapse:collapse;font-size:14px}
+table.rub th,table.rub td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.rub th{background:var(--bg);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;min-width:80px}.bar i{display:block;height:100%;background:var(--ok)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters button{padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:13px}
+.filters button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.rv{background:#fff;border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 2px 10px rgba(15,23,42,.06);border-left:6px solid var(--line)}
+.rv.ok{border-left-color:var(--ok)}.rv.no{border-left-color:var(--bad)}.rv.skip{border-left-color:#94a3b8}
+.rvh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.pts{font-weight:800;padding:3px 12px;border-radius:99px;font-size:13px}
+.pts.ok{background:var(--okbg);color:#166534}.pts.no{background:var(--badbg);color:#991b1b}.pts.skip{background:#e2e8f0;color:#475569}
+.keybox{background:var(--okbg);border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-top:10px;font-size:14px}
+.pemb{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 14px;margin-top:10px;font-size:14.5px}
+.note{background:var(--warnbg);border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-top:10px;font-size:13.5px;color:#78350f}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal>div{background:#fff;border-radius:16px;padding:26px;max-width:440px;width:100%}
+.modal h3{margin:0 0 8px;color:var(--navy)}
+.modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.side{position:static;order:-1}.info,.stats{grid-template-columns:repeat(2,1fr)}.score{font-size:60px}.start-card{padding:22px}.grid{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(5,1fr)}.topbar .t small{display:none}}
+@media print{.topbar,.filters,.noprint{display:none!important}.rv{break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<!-- START -->
+<section class="start" id="start">
+  <div class="start-card">
+    <span class="badge">SIMULASI UJIAN • TKA SMA/MA & SMK/MAK</span>
+    <h1>Prediksi Soal TKA Sosiologi 2026</h1>
+    <p class="sub">Latihan interaktif lengkap dengan kunci jawaban dan pembahasan.</p>
+    <div class="info">
+      <div><b>50</b><span>Soal</span></div>
+      <div><b>90</b><span>Menit</span></div>
+      <div><b>2</b><span>Poin / soal</span></div>
+      <div><b>100</b><span>Skor maksimal</span></div>
+    </div>
+    <div class="rules">
+      <h3>Bentuk soal &amp; rubrik penilaian</h3>
+      <ul>
+        <li><b>Pilihan ganda sederhana</b> (20 soal): pilih satu jawaban benar.</li>
+        <li><b>Pilihan ganda kompleks MCMA</b> (10 soal): pilih semua jawaban yang benar (lebih dari satu).</li>
+        <li><b>Pilihan ganda kompleks kategori</b> (20 soal): tentukan tiap pernyataan (Sesuai/Tepat/Logis atau sebaliknya).</li>
+        <li>Setiap soal bernilai <b>2 poin</b> bila jawaban <b>benar seluruhnya</b>; salah sebagian atau tidak dijawab = 0. Tidak ada pengurangan nilai.</li>
+        <li>Pembahasan baru terbuka setelah ujian diselesaikan.</li>
+      </ul>
+    </div>
+    <input type="text" id="nama" placeholder="Nama peserta (opsional)" maxlength="60">
+    <button class="btn btn-primary big" onclick="startExam()">Mulai Ujian ▶</button>
+  </div>
+</section>
+
+<!-- EXAM -->
+<section id="exam" class="hidden">
+  <div class="topbar">
+    <div class="t">TKA Sosiologi 2026<small id="peserta"></small></div>
+    <div class="timer" id="timer">90:00</div>
+    <button class="btn btn-warn" onclick="openFinish()">Selesai</button>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+  <div class="layout">
+    <div class="qcard" id="qcard"></div>
+    <aside class="side">
+      <div class="panel">
+        <h4>Navigasi Soal</h4>
+        <div class="grid" id="grid"></div>
+        <div class="legend">
+          <span><i style="background:var(--blue)"></i>Terjawab</span>
+          <span><i style="background:var(--warn)"></i>Ragu-ragu</span>
+          <span><i style="background:#fff"></i>Belum</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h4>Ringkasan</h4>
+        <div class="stat"><span>Terjawab</span><b id="sA">0</b></div>
+        <div class="stat"><span>Belum dijawab</span><b id="sB">50</b></div>
+        <div class="stat"><span>Ragu-ragu</span><b id="sF">0</b></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden">
+  <div class="result">
+    <div class="hero">
+      <div id="rname" style="opacity:.85;margin-bottom:6px"></div>
+      <div class="score"><span id="rscore">0</span><small> / 100</small></div>
+      <div class="grade" id="rgrade"></div>
+    </div>
+    <div class="stats">
+      <div><b id="rc" style="color:var(--ok)">0</b><span>Benar</span></div>
+      <div><b id="rw" style="color:var(--bad)">0</b><span>Salah</span></div>
+      <div><b id="rs" style="color:#64748b">0</b><span>Tidak dijawab</span></div>
+      <div><b id="rt">0</b><span>Waktu terpakai</span></div>
+    </div>
+    <div class="box">
+      <h3>Rubrik &amp; rincian skor</h3>
+      <table class="rub" id="rub"></table>
+    </div>
+    <div class="box">
+      <h3>Navigasi hasil</h3>
+      <div class="grid" id="rgrid" style="grid-template-columns:repeat(10,1fr)"></div>
+    </div>
+    <h3 style="color:var(--navy)">Kunci jawaban &amp; pembahasan</h3>
+    <div class="filters" id="filters">
+      <button class="on" data-f="all">Semua</button>
+      <button data-f="no">Salah</button>
+      <button data-f="skip">Tidak dijawab</button>
+      <button data-f="ok">Benar</button>
+    </div>
+    <div id="review"></div>
+    <div class="noprint" style="display:flex;gap:10px;justify-content:center;margin:24px 0 40px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="restart()">↻ Ulangi Ujian</button>
+      <button class="btn btn-ghost" onclick="window.print()">🖨 Cetak Hasil</button>
+    </div>
+  </div>
+</section>
+
+<div class="modal hidden" id="modal"><div id="modalBody"></div></div>
+
+<script>
+/* ===== DATA ===== */
+var ST={
+ a:{l:"Teks untuk soal nomor 31–35",t:"Pemerintah berencana membangun jalur kereta cepat yang akan melintasi Desa Makmur, sebuah desa agraris yang warganya mayoritas bekerja sebagai petani. Proyek ini dijanjikan akan membawa kemajuan ekonomi dan menciptakan lapangan kerja baru. Namun, pembangunannya menuntut pembebasan lahan sawah subur yang menjadi sumber mata pencaharian utama dan telah diwariskan secara turun-temurun.<br><br>Akibatnya, masyarakat Desa Makmur terbelah menjadi dua kubu. Sebagian warga, terutama generasi muda, mendukung proyek tersebut karena melihatnya sebagai peluang untuk mendapatkan pekerjaan di luar sektor pertanian dan meningkatkan status ekonomi. Di sisi lain, para tetua adat dan sebagian besar petani menolak keras karena khawatir kehilangan mata pencaharian, tercerabut dari tradisi agraris, dan rusaknya tatanan sosial desa. Perbedaan pandangan ini memicu perdebatan sengit di ruang publik, ketegangan antarkeluarga, serta pembentukan kelompok pro dan kontra proyek."},
+ b:{l:"Teks untuk soal nomor 36–40",t:"Fenomena Financial Technology (Fintech) dalam bentuk layanan pinjaman daring atau “pinjol” telah berkembang pesat di Indonesia. Di satu sisi, pinjol menawarkan kemudahan akses kredit bagi masyarakat yang sulit dijangkau oleh sistem perbankan konvensional, seperti pemilik usaha mikro atau mereka yang membutuhkan dana darurat. Hal ini dianggap sebagai langkah menuju inklusi keuangan.<br><br>Namun di sisi lain, fenomena ini memunculkan masalah sosial baru. Banyak pengguna, terutama dari kalangan ekonomi menengah ke bawah dengan literasi keuangan yang rendah, terjerat dalam lingkaran utang akibat bunga yang sangat tinggi dan tenor yang singkat. Praktik penagihan utang yang agresif dan tidak etis, seperti mempermalukan peminjam di media sosial, intimidasi kepada kontak di telepon genggam, dan pelanggaran privasi data, telah menjadi masalah yang meluas. Hal ini menimbulkan kecemasan sosial, konflik keluarga, bahkan dalam beberapa kasus menyebabkan tindakan bunuh diri. Otoritas Jasa Keuangan (OJK) telah berupaya mengatur industri ini, namun layanan pinjol ilegal terus bermunculan."},
+ c:{l:"Teks untuk soal nomor 41–45",t:"Kampung Kreatif, sebuah perkampungan padat penduduk di tengah kota, dulunya dikenal sebagai lingkungan dengan biaya hidup yang murah dan dihuni oleh para seniman, pekerja informal, dan keluarga-keluarga yang telah lama tinggal di sana. Ikatan sosial antarwarga sangat kuat, dan banyak tradisi komunal seperti kerja bakti dan perayaan bersama masih dijalankan.<br><br>Dalam satu dekade terakhir, keunikan artistik dan lokasi strategis Kampung Kreatif menarik minat para pengembang properti dan kelas menengah perkotaan. Kafe-kafe trendi, galeri seni, dan apartemen modern mulai bermunculan menggantikan warung-warung dan rumah-rumah lama. Harga sewa dan nilai properti meroket. Akibatnya, banyak warga asli dan seniman perintis yang tidak mampu lagi bertahan dan terpaksa pindah ke pinggiran kota yang lebih terjangkau. Wajah Kampung Kreatif pun berubah. Kini, ia menjadi kawasan elite yang lebih individualistis, dihuni oleh para profesional muda dan ekspatriat."},
+ d:{l:"Teks untuk soal nomor 46–50",t:"Bima, seorang influencer gaya hidup terkenal dengan jutaan pengikut, baru-baru ini mengunggah sebuah video yang berisi lelucon yang dianggap menyinggung dan merendahkan kelompok minoritas tertentu. Dalam hitungan jam, klip video tersebut menjadi viral. Tagar #BimaRasis menjadi tren di media sosial, memicu gelombang kemarahan publik yang masif. Ribuan warganet menyerukan untuk berhenti mengikuti (unfollow) dan memboikot Bima. Beberapa merek yang sebelumnya bekerja sama dengannya pun serentak memutuskan kontrak.<br><br>Di tengah derasnya hujatan, Bima menghapus video tersebut dan mengunggah video permintaan maaf. Namun, publik terbelah. Sebagian menerima permintaan maafnya dan menganggapnya sebagai sebuah kekhilafan. Sebagian lain menolaknya, menganggap permintaan maaf itu tidak tulus dan menuntut Bima untuk bertanggung jawab lebih jauh. Ada pula kelompok pembelanya yang berargumen bahwa reaksi publik berlebihan dan merupakan bentuk “budaya pembatalan” (cancel culture) yang membungkam kebebasan berekspresi."}
+};
+var CL={S:["Sesuai","Tidak Sesuai"],T:["Tepat","Tidak Tepat"],L:["Logis","Tidak Logis"]};
+var Q=[];
+function S1(q,o,a,e,s,note){Q.push({t:"single",q:q,o:o,a:a,e:e,s:s,note:note})}
+function MM(q,o,a,e,s){Q.push({t:"mcma",q:q,o:o,a:a,e:e,s:s})}
+function CT(c,q,o,a,e,s,note){Q.push({t:"cat",c:c,q:q,o:o,a:a,e:e,s:s,note:note})}
+
+/* 1 */ S1("Sosiologi memiliki objek kajian yang khas yang membedakannya dengan ilmu-ilmu sosial lainnya. Pernyataan yang paling tepat mendefinisikan objek kajian utama sosiologi adalah ...",
+["Proses kejiwaan individu yang memengaruhi perilakunya dalam merespons lingkungan.","Kegiatan manusia dalam memenuhi kebutuhan hidupnya yang tidak terbatas dengan alat pemuas yang terbatas.","Hubungan timbal balik antara individu, antar kelompok, serta hubungan antara individu dan kelompok di dalam masyarakat.","Pengaruh kondisi geografis terhadap pola pemukiman dan mata pencaharian penduduk di suatu wilayah.","Proses perebutan dan pemeliharaan kekuasaan dalam mengatur kehidupan publik atau negara."],2,
+"Objek kajian utama sosiologi adalah masyarakat dan interaksi yang terjadi di dalamnya, termasuk hubungan antarindividu dan kelompok.");
+/* 2 */ S1("Setiap tahun, sebuah desa mengadakan upacara “sedekah bumi” sebagai wujud syukur atas hasil panen. Seluruh warga, tua dan muda, berpartisipasi aktif dalam persiapan dan pelaksanaan upacara tersebut. Tradisi ini tidak hanya bertujuan untuk mengungkapkan rasa syukur, tetapi juga untuk mempererat ikatan sosial antarwarga dan melestarikan nilai-nilai leluhur. Berdasarkan fungsinya, praktik yang dijelaskan pada kasus tersebut merupakan contoh dari ....",
+["Lembaga Politik","Lembaga Ekonomi","Lembaga Pendidikan","Lembaga Agama","Lembaga Budaya"],4,
+"Upacara sedekah bumi berkaitan dengan tradisi wujud syukur dan pelestarian nilai leluhur masyarakat, yang secara fungsi mengacu pada peran lembaga agama dan budaya dalam mempertahankan integrasi sosial.",null,
+"Kunci resmi pada naskah menyebut “E. Lembaga Budaya (atau D. Lembaga Agama)”. Simulasi ini memakai E sebagai kunci utama. Soal ini sebaiknya ditinjau ulang karena dua opsi sama-sama masuk akal.");
+/* 3 */ CT("S","Di sebuah kota metropolitan, pemerintah meluncurkan program beasiswa khusus untuk pelajar dari keluarga berpenghasilan rendah agar dapat melanjutkan pendidikan ke jenjang perguruan tinggi. Program ini dirancang karena data menunjukkan adanya kesenjangan angka partisipasi kuliah antara pelajar dari keluarga kaya dan miskin.<br><br>Berdasarkan deskripsi tersebut, tentukan apakah pernyataan berikut Sesuai atau Tidak Sesuai dengan konsep kesetaraan dalam sosiologi.",
+["Tanaman kaktus yang memiliki daun termodifikasi menjadi duri adalah bentuk adaptasi untuk mengurangi penguapan.","Bioma ini sangat ideal untuk kegiatan pertanian pangan skala besar tanpa memerlukan teknologi irigasi.","Aktivitas ekonomi manusia yang umum dijumpai di wilayah ini antara lain peternakan nomaden dan pertambangan."],[1,1,1],
+"Stimulus soal membahas tentang kesenjangan dan beasiswa pendidikan, namun seluruh pernyataan pada tabel justru membahas adaptasi tanaman kaktus dan bioma (geografi/biologi), sehingga sama sekali tidak relevan dengan konsep kesetaraan sosiologi.",null,
+"Pernyataan pada soal ini tidak nyambung dengan stimulusnya (kemungkinan salah tempel pada naskah asli). Kunci tetap mengikuti naskah: ketiganya Tidak Sesuai.");
+/* 4 */ CT("T","Fenomena Hallyu (Gelombang Korea) telah menyebar pesat, memengaruhi gaya hidup anak muda di Indonesia melalui musik, drama, dan produk kecantikan. Di satu sisi, ini mendorong konektivitas global, namun di sisi lain menimbulkan kekhawatiran akan konsumerisme dan pergeseran nilai lokal. Manakah respons kritis yang Tepat atau Tidak Tepat dalam menanggapi fenomena perubahan sosial tersebut?",
+["Mendorong generasi muda untuk melakukan refleksi diri dan literasi media agar dapat memilah pengaruh budaya asing secara bijak.","Menyeimbangkan apresiasi terhadap tren global dengan partisipasi aktif dalam kegiatan dan promosi budaya lokal.","Menganggap semua pengaruh budaya asing sebagai ancaman langsung terhadap identitas bangsa yang harus ditolak sepenuhnya."],[0,0,1],
+"Menyikapi globalisasi budaya, sikap yang dianjurkan adalah memilah secara bijak dan tetap mengapresiasi budaya lokal tanpa menutup diri atau menganggap semua budaya asing sebagai ancaman mutlak.");
+/* 5 */ MM("Seorang siswa berencana meneliti “pengaruh intensitas penggunaan media sosial terhadap pola interaksi tatap muka di kalangan siswa SMA”. Untuk itu, ia merancang langkah-langkah berikut:<ul><li>Menyusun angket dengan pertanyaan tertutup (misalnya, pilihan ganda dan skala Likert) untuk mengukur durasi penggunaan media sosial dan frekuensi interaksi tatap muka.</li><li>Menentukan responden sebanyak 50 siswa yang dipilih secara acak dari seluruh jenjang kelas (X, XI, dan XII).</li><li>Melakukan wawancara mendalam dengan semua responden untuk mengklarifikasi jawaban angket mereka.</li><li>Menganalisis data kuantitatif dari angket menggunakan statistik deskriptif dan data kualitatif dari wawancara untuk memperkaya penjelasan.</li></ul>Berdasarkan rancangan tersebut, manakah langkah yang perlu dievaluasi atau disempurnakan agar penelitian lebih efektif dan logis?",
+["Pemilihan responden secara acak dari seluruh jenjang kelas berisiko menghasilkan data yang bias karena perbedaan karakteristik antar angkatan.","Metode analisis yang menggabungkan statistik dan interpretasi wawancara (metode campuran) sudah tepat untuk penelitian ini.","Melakukan wawancara mendalam kepada seluruh 50 responden tidak efisien dari segi waktu dan tenaga untuk skala penelitian siswa.","Penggunaan angket dengan pertanyaan tertutup sudah tepat untuk mengumpulkan data kuantitatif yang terukur.","Sebaiknya wawancara mendalam hanya dilakukan pada beberapa responden yang dipilih secara purposif (bertujuan) untuk mendalami kasus-kasus unik."],[0,2,4],
+"Pemilihan sampel acak antar-jenjang berisiko bias, dan melakukan wawancara mendalam ke seluruh 50 responden sangat tidak efisien; wawancara mendalam (kualitatif) lebih tepat menggunakan sampel bertujuan (purposive) untuk menghemat waktu dan menggali informasi unik.");
+/* 6 */ S1("Dua orang yang tidak saling mengenal duduk bersebelahan di sebuah halte bus. Keduanya saling melihat sekilas namun tidak ada percakapan, senyuman, atau gestur lain yang dipertukarkan. Meskipun terjadi kontak visual, peristiwa ini belum dapat diklasifikasikan sebagai interaksi sosial karena tidak terpenuhinya salah satu syarat utama, yaitu …",
+["Adanya kontak sosial primer","Terjadinya proses identifikasi","Adanya tujuan yang sama","Terjadinya komunikasi","Adanya kesamaan latar belakang"],3,
+"Syarat interaksi sosial adalah kontak sosial (seperti kontak visual) dan komunikasi. Dalam kasus ini, komunikasi belum terjadi.");
+/* 7 */ S1("Sebuah organisasi seperti Persatuan Guru Republik Indonesia (PGRI) memiliki Anggaran Dasar dan Anggaran Rumah Tangga (AD/ART) yang jelas, struktur kepengurusan yang terdefinisi, dan tujuan yang spesifik. Berdasarkan ciri-ciri tersebut, PGRI merupakan contoh dari kelompok …",
+["Primer","Informal","Formal","Paguyuban (Gemeinschaft)","Sekunder yang tidak teratur"],2,
+"Kelompok formal memiliki aturan tertulis yang tegas seperti AD/ART, serta pembagian struktur dan tugas yang jelas.");
+/* 8 */ CT("S","Kelompok A adalah panitia penyelenggara acara kemerdekaan di sebuah RT. Kelompok ini memiliki ketua, sekretaris, bendahara, dan seksi-seksi lainnya. Tujuan, tugas, dan jadwal kegiatan mereka terdefinisi dengan jelas. Di sisi lain, Kelompok B adalah sekumpulan remaja di RT yang sama yang sering berkumpul di malam hari untuk bermain gitar bersama tanpa ada aturan formal atau tujuan spesifik selain kebersamaan.<br><br>Berdasarkan konsep kelompok sosial, tentukan apakah pernyataan perbandingan berikut Sesuai atau Tidak Sesuai.",
+["Kelompok A merupakan contoh kelompok formal, sedangkan Kelompok B adalah contoh kelompok informal.","Interaksi di dalam Kelompok A lebih didasarkan pada prinsip Gesellschaft (patembayan) yang bersifat instrumental.","Kelompok B dapat diklasifikasikan sebagai kelompok primer karena hubungan antar-anggotanya bersifat personal dan intim."],[0,0,0],
+"Panitia acara adalah contoh kelompok sekunder (formal) dengan hubungan berdasarkan pencapaian tugas (Gesellschaft), sedangkan pertemanan remaja yang intim dan niraturan adalah kelompok primer (informal).");
+/* 9 */ CT("L","Seorang peneliti ingin memahami bagaimana para pedagang kaki lima (PKL) di kawasan wisata Malioboro, Yogyakarta, memaknai ruang dan membangun solidaritas di antara mereka. Peneliti tersebut merumuskan judul: “Studi Fenomenologi tentang Makna Ruang dan Solidaritas Sosial di Kalangan Pedagang Kaki Lima Malioboro”.<br><br>Berdasarkan pendekatan fenomenologi pada judul tersebut, tentukan apakah pilihan metode berikut Logis atau Tidak Logis untuk digunakan.",
+["Menggunakan kuesioner dengan pertanyaan tertutup yang disebarkan kepada ratusan PKL di seluruh Yogyakarta.","Melakukan wawancara mendalam (in-depth interview) dengan beberapa PKL untuk menggali pengalaman subjektif mereka.","Melakukan observasi untuk mengamati interaksi sehari-hari dan cara para PKL mengelola lapak mereka."],[1,0,0],
+"Pendekatan fenomenologi adalah penelitian kualitatif yang mengkaji makna subjektif. Karena itu, metode penyebaran kuesioner tertutup tidak tepat, sementara wawancara mendalam dan observasi merupakan metode yang logis.");
+/* 10 */ MM("Dalam kasus konflik di Kota Praja, ketegangan antara penduduk lama dan pendatang meningkat akibat perebutan penggunaan ruang publik untuk kegiatan budaya. Pemerintah setempat dituntut untuk mencari solusi damai.<br><br>Berdasarkan prinsip-prinsip manajemen konflik dalam sosiologi, manakah rekomendasi kebijakan yang paling konstruktif untuk menangani konflik tersebut?",
+["Mengadakan festival budaya bersama yang mengkolaborasikan tradisi penduduk lama dan ekspresi budaya pendatang.","Membangun lebih banyak ruang publik serbaguna yang dapat diakses oleh semua komunitas secara adil.","Membentuk dewan perwakilan warga yang terdiri atas tokoh dari kedua belah pihak untuk merumuskan jadwal penggunaan ruang publik.","Menetapkan salah satu kebudayaan (penduduk lama atau pendatang) sebagai budaya dominan di Kota Praja.","Menggunakan aparat keamanan untuk membubarkan setiap kegiatan budaya yang berpotensi menimbulkan keramaian."],[0,1,2],
+"Resolusi konflik yang konstruktif membutuhkan jalan kompromi dan mediasi seperti pembentukan dewan bersama, perluasan ruang fisik/akomodasi, dan kolaborasi budaya, alih-alih represi atau dominasi sepihak.");
+/* 11 */ S1("Seorang pekerja yang baru saja di-PHK cenderung menyalahkan dirinya sendiri karena dianggap kurang kompeten. Namun, seorang sosiolog akan menganalisis fenomena ini dalam konteks yang lebih luas, seperti krisis ekonomi yang menyebabkan perusahaan melakukan efisiensi atau perubahan teknologi yang membuat keahlian pekerja tersebut tidak lagi relevan. Kemampuan untuk mengaitkan “masalah pribadi” (personal troubles) dengan “isu-isu publik” (public issues) ini merupakan inti dari konsep …",
+["Tindakan sosial","Fakta sosial","Definisi situasi","Imajinasi sosiologis","Realitas sosial"],3,
+"Konsep ini diajukan oleh C. Wright Mills, yaitu kemampuan mengaitkan masalah hidup personal dengan struktur atau isu publik yang lebih besar di masyarakat.");
+/* 12 */ S1("Musik dangdut koplo merupakan sebuah genre yang populer di Indonesia. Musik ini memadukan irama dangdut Melayu dengan musik rock, pop, dan terutama kendang dari musik tradisional Jawa. Unsur-unsur dari berbagai kebudayaan tersebut menyatu dan menciptakan sebuah bentuk musik baru, namun unsur asli dari masing-masing kebudayaan tidak sepenuhnya hilang. Proses perpaduan budaya yang menghasilkan budaya baru tanpa menghilangkan identitas asli ini disebut …",
+["Asimilasi","Amalgamasi","Akulturasi","Segregasi","Westernisasi"],2,
+"Percampuran berbagai unsur kebudayaan asing dengan budaya lokal yang menghasilkan bentuk baru tanpa menghilangkan unsur atau identitas kebudayaan aslinya dinamakan akulturasi.");
+/* 13 */ CT("T","Sebuah studi di sektor teknologi menunjukkan bahwa meskipun perempuan dan laki-laki memiliki kualifikasi pendidikan yang sama, perempuan cenderung lebih sedikit menempati posisi pimpinan dan sering menghadapi penilaian yang lebih ketat. Fenomena ini dikenal sebagai glass ceiling (langit-langit kaca), sebuah penghalang tak terlihat yang menghambat kemajuan karier kelompok tertentu.<br><br>Berdasarkan fenomena ketidaksetaraan gender tersebut, tentukan apakah analisis sosiologis berikut Tepat atau Tidak Tepat.",
+["Fenomena glass ceiling terjadi karena adanya stereotip gender yang mengakar dalam budaya perusahaan, yang menganggap kepemimpinan lebih cocok untuk laki-laki.","Kurangnya representasi perempuan di posisi puncak murni disebabkan oleh pilihan pribadi perempuan yang lebih memprioritaskan keluarga daripada karier.","Salah satu upaya efektif untuk mengatasi glass ceiling adalah dengan menerapkan kebijakan rekrutmen dan promosi yang objektif serta program mentoring bagi perempuan."],[0,1,0],
+"Fenomena glass ceiling berakar dari stereotip budaya (patriarki) dan hambatan struktural perusahaan, bukan murni preferensi individual perempuan.");
+/* 14 */ CT("S","Lembaga pendidikan memiliki fungsi yang disadari dan diharapkan oleh masyarakat, seperti memberikan pengetahuan dan keterampilan. Namun, lembaga ini juga memiliki fungsi lain yang tidak disadari, seperti menjadi tempat bagi siswa untuk menemukan pasangan hidup.<br><br>Berdasarkan konsep fungsi lembaga sosial Robert K. Merton, tentukan apakah analisis berikut Sesuai atau Tidak Sesuai.",
+["Memberikan pengetahuan dan keterampilan kepada siswa adalah fungsi manifes dari lembaga pendidikan.","Menjadi arena perjodohan bagi siswa merupakan fungsi laten dari lembaga pendidikan.","Mengurangi tingkat pengawasan orang tua terhadap anak remaja merupakan fungsi laten dari lembaga pendidikan."],[0,0,0],
+"Fungsi manifes adalah tujuan resmi yang disadari (mentransfer ilmu), sementara fungsi laten adalah dampak tersembunyi yang tidak disadari (ajang mencari jodoh, menunda pendewasaan/pengawasan anak).");
+/* 15 */ MM("Seorang sosiolog ingin melakukan penelitian kualitatif mengenai “Strategi Bertahan Hidup Anak Jalanan di Jakarta”. Mengingat partisipan penelitian adalah kelompok rentan dan masih di bawah umur.<br><br>Manakah prinsip-prinsip etika penelitian yang mutlak harus dipatuhi oleh sosiolog tersebut?",
+["Menjamin anonimitas partisipan dengan menggunakan nama samaran dalam semua catatan dan publikasi penelitian.","Memberikan informasi yang sebenarnya tentang tujuan penelitian tanpa menipu atau memaksa partisipan untuk terlibat.","Melaporkan identitas anak-anak tersebut kepada dinas sosial agar mereka segera mendapatkan penanganan.","Meminta persetujuan (informed consent) dari partisipan, dan jika memungkinkan, mencari pendamping atau wali yang mereka percayai.","Memberikan imbalan yang cukup besar untuk memastikan mereka bersedia memberikan informasi yang mendalam."],[0,1,3],
+"Etika penelitian yang melibatkan partisipan rentan wajib mengedepankan asas kerahasiaan (anonimitas), persetujuan sadar (informed consent) dengan wali, serta tidak menipu subjek penelitian.");
+/* 16 */ S1("Interaksi sosial merupakan syarat utama terjadinya aktivitas-aktivitas sosial. Dua syarat pokok yang harus dipenuhi agar sebuah interaksi sosial dapat terjadi adalah …",
+["simpati dan empati","kontak sosial dan komunikasi","imitasi dan identifikasi","sugesti dan motivasi","akomodasi dan asimilasi"],1,
+"Interaksi baru akan bermakna dan terjadi secara sosial jika ada pertemuan pihak-pihak (kontak) dan proses pertukaran makna pesan (komunikasi).");
+/* 17 */ S1("Salah satu ciri utama sosiologi sebagai ilmu pengetahuan adalah bersifat empiris. Pernyataan yang paling tepat menjelaskan makna dari sifat empiris tersebut adalah …",
+["Sosiologi selalu berusaha menyusun abstraksi dari hasil pengamatan menjadi teori.","Teori-teori sosiologi yang sudah ada dapat diperbaiki dan diperluas seiring waktu.","Sosiologi mendasarkan kajiannya pada hasil observasi dan penalaran logis, bukan spekulasi.","Kajian sosiologi tidak menilai baik atau buruknya suatu fakta sosial, melainkan menjelaskannya.","Sosiologi berfokus pada gejala-gejala sosial yang terjadi dalam masyarakat."],2,
+"Sifat empiris berarti sosiologi bertumpu pada kenyataan objektif yang diamati dari lapangan, bukan dari khayalan atau asumsi spekulatif.");
+/* 18 */ CT("S","Kelompok A adalah tim kerja di sebuah perusahaan yang memiliki struktur, jadwal, dan target yang jelas. Kelompok B adalah lingkaran pertemanan dekat yang terbentuk sejak SMA, yang sering berkumpul tanpa agenda formal hanya untuk berbagi cerita.<br><br>Berdasarkan konsep kelompok sosial, tentukan apakah perbandingan berikut Sesuai atau Tidak Sesuai.",
+["Kelompok A adalah contoh kelompok sekunder, sedangkan Kelompok B adalah contoh kelompok primer.","Ikatan dalam Kelompok A didasari oleh prinsip Gesellschaft (patembayan), sedangkan Kelompok B didasari oleh Gemeinschaft (paguyuban).","Kelompok A dapat dikategorikan sebagai kelompok formal, sementara Kelompok B adalah kelompok informal."],[0,0,0],
+"Tim kerja memiliki relasi Gesellschaft yang bersifat fungsional dan berorientasi tujuan, sementara persahabatan memiliki kedekatan batin/afeksi (Gemeinschaft).");
+/* 19 */ MM("Pengenalan teknologi Artificial Intelligence (AI) dalam dunia kerja telah memicu perubahan sosial yang signifikan. AI mampu mengotomatisasi banyak pekerjaan rutin, mulai dari analisis data hingga layanan pelanggan, namun juga menciptakan jenis pekerjaan baru yang membutuhkan keahlian berbeda.<br><br>Berdasarkan deskripsi perubahan tersebut, manakah dampak sosial yang secara logis dapat diantisipasi?",
+["Terjadinya perubahan dalam stratifikasi sosial, di mana keahlian dalam mengelola AI menjadi dasar status sosial yang baru.","Potensi meningkatnya pengangguran struktural bagi pekerja yang keahliannya dapat digantikan oleh otomatisasi.","Timbulnya kebutuhan bagi lembaga pendidikan untuk mereformasi kurikulum agar sesuai dengan tuntutan pasar kerja di era AI.","Menurunnya tingkat konflik sosial karena semua pekerjaan menjadi lebih mudah dan efisien.","Menguatnya peran serikat buruh dalam melindungi semua jenis pekerjaan dari ancaman otomatisasi."],[0,1,2],
+"Kemajuan AI akan mengubah struktur pekerjaan yang berujung pada perubahan kurikulum sekolah, pergeseran tolok ukur stratifikasi, serta ancaman pengangguran struktural, sementara AI justru berpotensi memicu konflik ketenagakerjaan baru.");
+/* 20 */ CT("L","Seorang peneliti ingin melakukan studi dengan judul: “Studi Etnografi tentang Pola Pewarisan Nilai-Nilai Budaya pada Masyarakat Suku Anak Dalam di Jambi”.<br><br>Berdasarkan judul penelitian tersebut, tentukan apakah pilihan metode berikut Logis atau Tidak Logis untuk digunakan.",
+["Melakukan observasi partisipatif dengan cara tinggal bersama komunitas Suku Anak Dalam selama beberapa bulan.","Menyebarkan kuesioner dengan pertanyaan tertutup kepada kepala-kepala keluarga untuk mengukur efektivitas pewarisan nilai.","Melakukan wawancara mendalam dengan para sesepuh adat dan orang tua untuk memahami perspektif mereka tentang tradisi."],[0,1,0],
+"Penelitian etnografi murni bertumpu pada kualitatif mendalam (in-depth interview dan observasi partisipatif). Menggunakan kuesioner tidak sejalan dengan tujuan eksplorasi makna dalam metode etnografi.");
+/* 21 */ S1("Ketika seorang siswa mengalami kesulitan belajar, ia mungkin hanya menyalahkan kemampuannya sendiri. Namun, seorang sosiolog akan mencoba melihat kaitan antara kesulitan individu tersebut dengan isu yang lebih luas, seperti kualitas sistem pendidikan, kesenjangan akses teknologi, atau kondisi ekonomi keluarga. Kemampuan menghubungkan masalah pribadi (personal troubles) dengan isu-isu sosial yang lebih besar (public issues) ini dikenal sebagai …",
+["Imajinasi sosiologis","Fakta sosial","Tindakan sosial","Definisi situasi","Interaksi sosial"],0,
+"Kemampuan menjembatani persoalan pribadi (kesulitan belajar) dengan masalah sistemik struktural (sistem pendidikan, kondisi makro) adalah fungsi utama imajinasi sosiologis.");
+/* 22 */ S1("Di sebuah kawasan permukiman, komunitas pendatang dari Minang memperkenalkan masakan rendang yang kemudian digemari oleh penduduk asli setempat. Seiring waktu, bumbu rendang tersebut diadaptasi dan dipadukan dengan resep masakan lokal, menghasilkan cita rasa baru yang unik. Dalam proses ini, baik budaya Minang maupun budaya lokal tetap eksis dan saling memperkaya. Proses percampuran budaya yang menghasilkan bentuk baru tanpa menghilangkan identitas budaya asli disebut …",
+["Asimilasi","Segregasi","Amalgamasi","Akulturasi","Etnosentrisme"],3,
+"Peleburan budaya pendatang dan budaya asli tanpa menghilangkan identitas kebudayaan masing-masing disebut akulturasi.");
+/* 23 */ CT("T","Sebuah penelitian di berbagai perusahaan besar menunjukkan bahwa meskipun jumlah perempuan di level staf cukup banyak, representasi mereka di level manajer puncak dan direksi sangat sedikit. Fenomena ini sering disebut sebagai “langit-langit kaca” (glass ceiling), yaitu hambatan tak terlihat yang menghalangi kemajuan karier perempuan.<br><br>Berdasarkan fenomena ketidaksetaraan gender tersebut, tentukan apakah analisis sosiologis berikut Tepat atau Tidak Tepat.",
+["Hambatan ini murni terjadi karena perempuan secara kodrati tidak memiliki jiwa kepemimpinan sekuat laki-laki.","Adanya stereotip gender dan budaya patriarki yang mengakar di dalam perusahaan menjadi penyebab utama fenomena tersebut.","Salah satu solusi untuk mengatasi masalah ini adalah dengan menerapkan kebijakan promosi yang objektif dan menyediakan program mentoring bagi karyawan perempuan."],[1,0,0],
+"Glass ceiling sangat erat kaitannya dengan hegemoni nilai budaya (stereotip) yang membatasi gerak sosial perempuan. Anggapan bahwa hal ini muncul dari kodrat adalah tidak tepat secara sosiologis.");
+/* 24 */ MM("Industri fast fashion (mode cepat) telah menjadi fenomena global yang memungkinkan konsumen membeli pakaian sesuai tren terbaru dengan harga sangat murah. Namun, di balik itu, terdapat berbagai dampak sosial dan lingkungan yang signifikan.<br><br>Dari sudut pandang sosiologi kritis, manakah dampak-dampak negatif utama yang sering diasosiasikan dengan globalisasi industri fast fashion?",
+["Mendorong budaya konsumerisme yang berlebihan dan gaya hidup “sekali pakai”.","Memperkuat ketidaksetaraan global melalui praktik eksploitasi buruh di negara-negara produsen.","Menghasilkan limbah tekstil dalam jumlah besar yang merusak lingkungan.","Meningkatkan keragaman budaya karena semua orang dapat mengakses tren mode yang sama.","Memberdayakan pengrajin lokal untuk bersaing di pasar internasional."],[0,1,2],
+"Fast fashion sebagai dampak globalisasi justru mendorong kebiasaan berbelanja kompulsif, mengeksploitasi buruh murah di wilayah dunia ketiga, dan mengancam lingkungan akibat limbah.");
+/* 25 */ CT("L","Seorang peneliti ingin mempelajari pengalaman perundungan (bullying) di kalangan siswa SMP, sebuah topik yang sangat sensitif dan melibatkan partisipan di bawah umur.<br><br>Tentukan apakah penerapan prinsip etika penelitian berikut Logis atau Tidak Logis untuk dilakukan.",
+["Meminta informed consent (persetujuan sadar) dari orang tua atau wali murid sebelum melibatkan siswa dalam penelitian.","Menjamin kerahasiaan identitas (anonimitas) semua partisipan dalam catatan lapangan dan laporan akhir penelitian.","Mempublikasikan nama pelaku perundungan di laporan akhir untuk memberikan efek jera dan membantu sekolah."],[0,0,1],
+"Kode etik utama sosiolog adalah melindungi privasi dan identitas subjek penelitian, terlebih anak di bawah umur, sehingga mempublikasikan identitasnya merupakan sebuah pelanggaran etik murni.");
+/* 26 */ S1("Menurut teori anomi Robert K. Merton, seorang birokrat yang secara ketat mengikuti semua prosedur dan aturan kerja tanpa lagi memedulikan tujuan utama dari pekerjaannya (misalnya melayani masyarakat) merupakan contoh dari bentuk adaptasi menyimpang yang disebut …",
+["Inovasi","Konformitas","Pemberontakan","Ritualisme","Retretisme"],3,
+"Ritualisme terjadi ketika individu terus melaksanakan prosedur dan tradisi birokrasi, namun melupakan makna atau tujuan awal yang hendak dicapai.");
+/* 27 */ S1("Dalam sebuah penelitian kuantitatif, seorang peneliti ingin mengukur konsep “tingkat religiusitas”. Ia kemudian menentukan bahwa konsep tersebut akan diukur melalui beberapa indikator, seperti frekuensi beribadah per minggu, jumlah sumbangan keagamaan per bulan, dan keikutsertaan dalam kegiatan keagamaan. Proses penjabaran konsep yang abstrak menjadi indikator-indikator yang dapat diukur ini disebut …",
+["Merumuskan hipotesis","Menentukan populasi","Membuat definisi operasional","Melakukan tinjauan pustaka","Menganalisis data"],2,
+"Definisi operasional digunakan untuk mentransformasikan konsep teori yang bersifat abstrak menjadi pedoman ukur empiris yang siap dikumpulkan di lapangan.");
+/* 28 */ CT("T","Globalisasi telah memungkinkan mobilitas manusia yang tinggi, termasuk fenomena migrasi tenaga kerja terampil dari negara berkembang ke negara maju untuk mencari gaji dan fasilitas yang lebih baik. Fenomena ini sering disebut sebagai brain drain.<br><br>Berdasarkan fenomena brain drain sebagai dampak globalisasi, tentukan apakah analisis berikut Tepat atau Tidak Tepat.",
+["Bagi negara asal, brain drain dapat menghambat pembangunan karena kehilangan sumber daya manusia yang paling potensial dan inovatif.","Bagi negara tujuan, kedatangan tenaga kerja terampil dapat mengisi kekurangan sumber daya manusia dan mendorong pertumbuhan ekonomi.","Fenomena brain drain secara keseluruhan hanya menguntungkan individu yang bermigrasi dan tidak memiliki dampak apa pun bagi kedua negara."],[0,0,1],
+"Aliran tenaga profesional (brain drain) menguntungkan penambahan tenaga kerja di negara maju sekaligus menguras talenta intelektual dari negara yang ditinggalkan.");
+/* 29 */ CT("S","Dua desa yang bertetangga terlibat konflik perebutan batas wilayah yang telah berlangsung lama. Untuk menyelesaikan masalah, pemerintah daerah mengundang perwakilan dari kedua desa dan menghadirkan seorang juru runding profesional yang tidak memihak untuk membantu mereka mencapai kesepakatan.<br><br>Berdasarkan deskripsi penanganan konflik tersebut, tentukan apakah pernyataan berikut Sesuai atau Tidak Sesuai.",
+["Upaya yang dilakukan pemerintah daerah dengan menghadirkan juru runding disebut sebagai mediasi.","Peran juru runding dalam kasus ini adalah membuat keputusan akhir yang mengikat kedua belah pihak.","Tujuan dari upaya ini adalah untuk mencapai solusi win-win solution di mana kepentingan kedua desa dapat diakomodasi."],[0,1,0],
+"Mediator hanya berperan memfasilitasi jalannya komunikasi damai tanpa memiliki wewenang yuridis atau memaksa dalam memberikan vonis/keputusan (berbeda dengan arbitrase).");
+/* 30 */ MM("Pengetahuan sosiologi memiliki peran penting dalam berbagai sektor kehidupan. Manakah di antara pilihan berikut yang merupakan contoh penerapan konkret dari kegunaan sosiologi?",
+["Pemerintah kota menggunakan analisis sosiologi untuk merancang program pemberdayaan komunitas yang sesuai dengan budaya dan struktur sosial setempat.","Sebuah perusahaan melakukan riset sosiologis untuk memahami tren perilaku konsumen sebagai dasar strategi pemasaran produk baru.","Seorang pekerja sosial menerapkan pemahaman tentang dinamika keluarga untuk membantu menyelesaikan konflik dalam rumah tangga.","Seorang arsitek merancang tata ruang publik, seperti taman atau alun-alun, untuk mendorong interaksi dan kohesi sosial antarwarga.","Seorang fisikawan menggunakan teori relativitas untuk menghitung kecepatan cahaya."],[0,1,2,3],
+"Ilmu sosiologi dapat diterapkan secara riil mulai dari penyusunan kebijakan, tata letak ruang sosial-arsitektur kota, hingga bedah riset segmentasi konsumen. (Opsi 5 terkait kajian ilmu alam eksakta).");
+/* 31 */ S1("Dilihat dari pemicu utamanya, konflik yang terjadi di tengah masyarakat Desa Makmur paling tepat diklasifikasikan sebagai konflik yang disebabkan oleh …",
+["perbedaan antar-individu","perbedaan kebudayaan","perubahan sosial yang terlalu cepat","perbedaan kepentingan","perbedaan antar-ras"],3,
+"Warga desa Makmur terpecah karena kepentingan material; generasi muda ingin lompatan ekonomi, sementara golongan tua lebih mementingkan keamanan sosial dan kepemilikan lahan agraris.","a");
+/* 32 */ S1("Rencana pembangunan jalur kereta cepat yang dicanangkan oleh pemerintah merupakan faktor pendorong perubahan sosial di Desa Makmur. Berdasarkan sumbernya, faktor ini dapat digolongkan sebagai …",
+["faktor internal yang berasal dari dalam masyarakat","faktor eksternal yang berasal dari luar masyarakat","faktor demografi akibat perubahan jumlah penduduk","faktor penemuan baru di bidang teknologi pertanian","faktor konflik yang bersifat laten"],1,
+"Proyek infrastruktur kereta cepat merupakan program intervensi negara/nasional yang masuk dan merombak pola tradisional tatanan sosial desa.","a");
+/* 33 */ CT("S","Terbentuknya kelompok pro dan kontra proyek di Desa Makmur adalah sebuah dinamika sosial yang menarik untuk dianalisis. Tentukan apakah analisis sosiologis mengenai kelompok-kelompok tersebut Sesuai atau Tidak Sesuai.",
+["Kelompok pro dan kontra dapat diklasifikasikan sebagai interest group (kelompok kepentingan) yang terbentuk untuk memengaruhi sebuah kebijakan publik.","Solidaritas yang terbentuk di dalam masing-masing kelompok lebih didasarkan pada ikatan kekerabatan daripada kesamaan tujuan.","Kedua kelompok tersebut merupakan contoh dari kelompok sekunder yang hubungannya didasarkan pada tujuan bersama yang bersifat instrumental."],[0,1,0],
+"Kelompok pro-kontra digerakkan oleh persinggungan kepentingan (interest group), di mana ikatan di dalam organisasinya bertumpu pada pertahanan kepentingan instrumental, bukan berakar murni dari garis keluarga.","a");
+/* 34 */ MM("Apabila proyek pembangunan kereta cepat ini pada akhirnya tetap dilaksanakan, manakah di antara dampak-dampak sosial berikut yang paling mungkin terjadi di Desa Makmur dalam jangka panjang?",
+["Terjadinya perubahan struktur mata pencaharian masyarakat dari sektor agraris ke sektor jasa dan industri kecil.","Munculnya potensi mobilitas sosial vertikal bagi sebagian warga yang mampu memanfaatkan peluang ekonomi baru.","Melemahnya pengaruh lembaga adat dalam kehidupan masyarakat seiring dengan masuknya modernisasi.","Menguatnya solidaritas mekanik di antara seluruh warga karena merasakan kemajuan ekonomi bersama.","Hilangnya seluruh tradisi agraris secara total dan mendadak dalam kurun waktu satu tahun."],[0,1,2],
+"Perubahan ruang fisik besar biasanya menggeser struktur lapangan kerja ke arah urban/industri yang mendorong kebebasan mobilitas hierarki vertikal dan menggerus pelan-pelan akar lembaga tradisional.","a");
+/* 35 */ CT("T","Pemerintah daerah berupaya untuk menengahi konflik yang terjadi di Desa Makmur. Tentukan apakah cara-cara penanganan konflik berikut Tepat atau Tidak Tepat dari sudut pandang sosiologi yang konstruktif.",
+["Memfasilitasi sebuah forum musyawarah desa yang melibatkan perwakilan dari kedua kubu untuk mencari jalan tengah (compromise).","Mengabaikan aspirasi kelompok kontra dan mempercepat proyek dengan dalih kepentingan nasional yang lebih besar.","Memberikan ganti rugi finansial dalam jumlah sangat besar dengan asumsi bahwa uang akan menyelesaikan penolakan para petani."],[0,1,1],
+"Penyelesaian sengketa berbasis kompromi dan musyawarah sangat diperlukan. Represi kekuasaan ataupun pemberian uang saja sering gagal memulihkan rekonsiliasi dan integrasi komunal purna-konflik.","a");
+/* 36 */ S1("Praktik penagihan yang dilakukan oleh oknum pinjol dengan cara mempermalukan nasabah di media sosial atau mengintimidasi kontak teleponnya merupakan tindakan yang melanggar norma sosial dan hukum yang berlaku. Dalam sosiologi, perilaku semacam ini dikategorikan sebagai .…",
+["pengendalian sosial","penyimpangan sosial","interaksi disosiatif","tindakan afektif","masalah sosial"],1,
+"Teror psikologis dan pencemaran nama baik di media yang dilakukan pinjol merupakan perwujudan konkret dari tindakan pelanggaran batasan nilai dan norma (penyimpangan sosial).","b");
+/* 37 */ S1("Berdasarkan stimulus, faktor utama yang membuat masyarakat dari kalangan ekonomi menengah ke bawah menjadi kelompok yang paling rentan terjerat dampak negatif pinjol adalah …",
+["kemudahan proses pengajuan pinjaman","kurangnya alternatif pinjaman dari lembaga formal","gaya hidup yang cenderung konsumtif","ketidakmampuan untuk memahami risiko akibat literasi keuangan yang rendah","pengaruh dari kelompok teman sebaya"],3,
+"Berdasarkan teks, kondisi buta finansial (literasi rendah) menyebabkan masyarakat gampang tertipu oleh jebakan utang bunga tinggi.","b");
+/* 38 */ CT("T","Fenomena pinjol sebagai bentuk perubahan sosial berbasis teknologi memiliki dua sisi dampak bagi masyarakat. Berdasarkan konsep fungsi dan disfungsi sosial, tentukan apakah analisis berikut Tepat atau Tidak Tepat.",
+["Membantu pemilik usaha mikro mendapatkan modal dengan cepat merupakan fungsi manifes dari layanan pinjol.","Timbulnya kecemasan sosial dan konflik keluarga akibat jeratan utang merupakan disfungsi dari fenomena pinjol.","Tumbuhnya sektor ekonomi digital dan lapangan kerja baru di bidang teknologi finansial adalah fungsi laten pinjol."],[0,0,0],
+"Pinjol menawarkan fungsi nyata untuk menalangi kredit, fungsi tak disadari lewat perluasan sektor finansial IT, dan disfungsi destruktif akibat jeratan utangnya yang menghancurkan struktur psikologis-keluarga.","b");
+/* 39 */ MM("Jeratan utang pinjol merupakan sebuah gejala sosial kompleks yang disebabkan oleh berbagai faktor. Berdasarkan stimulus dan pengetahuan sosiologi Anda, manakah faktor-faktor sosial yang paling signifikan berkontribusi pada fenomena ini?",
+["Adanya ketidaksetaraan akses terhadap lembaga keuangan formal (bank) yang memaksa sebagian masyarakat mencari alternatif berisiko.","Tekanan sosial untuk mengikuti gaya hidup konsumtif yang sering ditampilkan di media sosial.","Melemahnya norma dan pengawasan hukum yang efektif, sehingga menciptakan kondisi anomi di mana penyedia pinjol ilegal leluasa beroperasi.","Meningkatnya sikap individualistis di masyarakat perkotaan.","Adanya pemahaman bahwa utang adalah simbol status sosial yang tinggi."],[0,1,2],
+"Utang pinjol ditopang oleh gaya hidup hedonisme konsumtif di media sosial, minimnya regulasi (kondisi anomie transisional), serta ketidakmampuan golongan marjinal menembus akses institusi formal perbankan.","b");
+/* 40 */ CT("L","Fenomena pinjol yang kompleks dapat dianalisis menggunakan berbagai kacamata (perspektif) dalam sosiologi untuk mendapatkan pemahaman yang utuh. Tentukan apakah penerapan perspektif sosiologi berikut Logis atau Tidak Logis.",
+["Perspektif Fungsionalisme Struktural akan menyoroti bagaimana pinjol mengisi fungsi penting yang tidak dapat dipenuhi oleh lembaga perbankan.","Perspektif Konflik akan fokus pada bagaimana pinjol menjadi alat bagi kelompok pemilik modal untuk mengeksploitasi dan mengendalikan kelompok ekonomi lemah.","Perspektif Interaksionisme Simbolik akan tertarik meneliti bagaimana label “gagal bayar” yang diberikan oleh penagih memengaruhi konsep diri dan interaksi sosial si peminjam."],[0,0,0],
+"Sosiologi memandang fenomena dari berbagai kacamata (Struktural untuk melihat peran, Konflik untuk melihat pemerasan kelas modal, dan Interaksionisme untuk mengamati konstruksi makna pada label utang).","b");
+/* 41 */ S1("Proses perubahan sosial di suatu kawasan kota yang ditandai oleh masuknya penduduk kelas menengah-atas, yang kemudian meningkatkan harga properti dan menyebabkan tergesernya penduduk asli berpenghasilan rendah, seperti yang terjadi di Kampung Kreatif, secara spesifik dikenal sebagai …",
+["Urbanisasi","Westernisasi","Modernisasi","Sekularisasi","Gentrifikasi"],4,
+"Gejala pengambilalihan suatu kawasan murah (sering dihuni seniman atau kelas bawah) oleh kelas menengah baru yang berdampak melambungnya harga ruang kota sehingga menggusur populasi pribuminya dikenal sebagai gentrifikasi.","c");
+/* 42 */ S1("Kehidupan sosial di Kampung Kreatif sebelum terjadinya perubahan, yang dicirikan oleh ikatan sosial yang kuat, kesamaan profesi (seniman, pekerja informal), dan adanya tradisi komunal, menunjukkan adanya tipe solidaritas sosial yang dominan menurut Émile Durkheim, yaitu …",
+["solidaritas organik","solidaritas mekanik","solidaritas fungsional","solidaritas anomi","solidaritas patembayan"],1,
+"Komunitas perintis dengan ikatan kolektif-komunal yang menjunjung semangat gotong royong dan kemiripan nilai adalah wajah dari masyarakat bersolidaritas mekanik.","c");
+/* 43 */ CT("T","Tergesernya penduduk asli Kampung Kreatif dapat dianalisis dari sudut pandang konflik sosial dan ketidaksetaraan. Tentukan apakah analisis sosiologis berikut Tepat atau Tidak Tepat.",
+["Proses ini menunjukkan adanya konflik kepentingan atas ruang kota antara kelas sosial ekonomi bawah dengan kelas sosial ekonomi atas.","Kekuatan modal dan akses terhadap kekuasaan yang dimiliki pengembang dan kelas menengah menjadi faktor penentu dalam “memenangkan” ruang tersebut.","Perpindahan penduduk asli terjadi murni karena keinginan pribadi mereka untuk mencari suasana baru di pinggiran kota."],[0,0,1],
+"Pengusiran ruang tersebut tidak diinisiasi oleh kerelaan psikologis mandiri, melainkan imbas dari tekanan perebutan aset properti yang dimenangkan oleh kelompok bermodal kapital.","c");
+/* 44 */ MM("Transformasi Kampung Kreatif menjadi kawasan elite membawa berbagai konsekuensi sosial jangka panjang. Manakah di antara dampak-dampak berikut yang paling mungkin terjadi?",
+["Hilangnya modal sosial komunitas berupa jaringan kerja sama dan rasa saling percaya yang dulu dimiliki warga lama.","Terjadinya segregasi spasial, di mana terjadi pemisahan ruang hidup yang tegas berdasarkan kelas sosial-ekonomi.","Meningkatnya homogenitas sosial di kawasan tersebut, di mana para penghuninya cenderung memiliki latar belakang profesi dan gaya hidup yang serupa.","Munculnya konflik laten antara penghuni lama yang tersisa dengan para pendatang baru karena perbedaan gaya hidup.","Menguatnya kembali tradisi gotong royong yang diinisiasi oleh para penghuni baru yang sadar sosial."],[0,1,2,3],
+"Imbas langsung gentrifikasi adalah matinya kohesi/modal sosial warga pribumi, timbulnya segregasi batas sosial, munculnya lingkungan homogen pendatang berpendapatan tinggi, serta dendam sisa laten di antara kedua pihak.","c");
+/* 45 */ CT("L","Fenomena perubahan di Kampung Kreatif dapat dianalisis menggunakan berbagai perspektif dalam sosiologi untuk mendapatkan pemahaman yang berbeda-beda. Tentukan apakah penerapan perspektif berikut Logis atau Tidak Logis.",
+["Perspektif Fungsionalisme akan melihat perubahan ini sebagai proses evolusi kota yang wajar, di mana area yang kurang produktif menjadi lebih efisien secara ekonomi.","Perspektif Konflik akan fokus pada bagaimana kelompok dengan modal besar (pengembang) mendominasi kelompok lemah (warga asli) dalam perebutan sumber daya langka, yaitu ruang kota.","Perspektif Interaksionisme Simbolik akan tertarik untuk meneliti bagaimana makna “rumah” dan “lingkungan” berubah bagi warga lama yang terpaksa pindah."],[0,0,0],
+"Fungsional melihat modernisasi kawasan adalah wajar, Konflik melihat ketimpangan kekuasaan tanah, sedangkan Interaksionis melihat perubahan definisi identitas “tempat tinggal” bagi penghuninya.","c");
+/* 46 */ S1("Tindakan warganet yang secara serentak menyerukan boikot dan tindakan merek yang memutuskan kontrak sebagai sanksi atas perilaku Bima yang dianggap menyimpang merupakan contoh dari mekanisme …",
+["akomodasi","kontravensi","pengendalian sosial","penyimpangan primer","perubahan sosial"],2,
+"Respons publik dan sanksi cancel culture digunakan sebagai wujud penghukuman massal agar pelaku pelanggaran kembali tunduk pada batas norma (kontrol sosial).","d");
+/* 47 */ S1("Seluruh proses sosial dalam kasus Bima, mulai dari penyebaran konten, mobilisasi kemarahan publik, hingga perdebatan pro dan kontra, terjadi dalam tempo yang sangat cepat dan melintasi batas geografis. Lembaga modern yang menjadi arena utama dari fenomena ini adalah …",
+["lembaga keluarga","lembaga pendidikan","lembaga hukum","media massa konvensional","media sosial"],4,
+"Lembaga yang paling berperan memfasilitasi persebaran arus opini yang seketika viral melampaui geografi spasial adalah media sosial modern.","d");
+/* 48 */ CT("T","Fenomena cancel culture yang digambarkan dalam kasus Bima dapat dianalisis sebagai sebuah bentuk pengendalian sosial di era digital yang memiliki sisi positif dan negatif. Tentukan apakah analisis sosiologis berikut Tepat atau Tidak Tepat.",
+["Cancel culture dapat berfungsi sebagai mekanisme kontrol informal untuk menegakkan norma toleransi yang mungkin tidak terjangkau oleh hukum formal.","Ancaman “dibatalkan” (cancelled) dapat mendorong figur publik untuk lebih bertanggung jawab dan berhati-hati dalam berekspresi di ruang publik.","Sebagai bentuk pengendalian yang didasarkan pada opini massa di media sosial, cancel culture selalu menghasilkan sanksi yang adil dan objektif."],[0,0,1],
+"Meski cancel culture bertindak efektif sebagai cambuk moral dan teguran norma tak tertulis, sistem peradilannya diampu oleh “massa” (kerumunan) yang acap kali bias, buta emosi, dan disproporsional.","d");
+/* 49 */ MM("Apabila fenomena cancel culture seperti yang dialami Bima menjadi semakin lazim dan kuat di masyarakat, manakah dampak sosial jangka panjang yang paling mungkin terjadi?",
+["Meningkatnya polarisasi sosial, di mana masyarakat terbelah tajam menjadi kubu-kubu yang saling menyerang berdasarkan perbedaan nilai.","Munculnya fenomena penyensoran diri (self-censorship), di mana individu menjadi takut menyuarakan opini yang berpotensi kontroversial.","Menurunnya kepercayaan publik terhadap figur otoritas dan selebritas karena setiap kesalahan dapat terekspos dan dihukum secara massal.","Terciptanya ruang dialog publik yang lebih sehat dan terbuka karena semua orang takut berbuat salah.","Hilangnya semua bentuk humor dan satire dari kehidupan masyarakat karena dianggap terlalu berisiko."],[0,1,2],
+"Mewabahnya kontrol budaya di media memperuncing polarisasi nilai masyarakat, mendegradasi karisma ketokohan publik, dan melahirkan sensor diri/pembungkaman suara secara ekstrem karena takut dihakimi massa.","d");
+/* 50 */ CT("L","Konflik yang timbul akibat kasus Bima dapat dianalisis dari berbagai perspektif sosiologi untuk mendapatkan pemahaman yang berbeda-beda. Tentukan apakah penerapan perspektif berikut Logis atau Tidak Logis.",
+["Perspektif Fungsionalisme akan melihat permintaan maaf Bima sebagai upaya untuk meredakan ketegangan dan mengembalikan masyarakat pada kondisi keseimbangan.","Perspektif Konflik akan fokus pada pertarungan antara kelompok dominan dan kelompok minoritas dalam mendefinisikan batas-batas ekspresi yang dapat diterima.","Perspektif Interaksionisme Simbolik akan tertarik untuk meneliti bagaimana tagar #BimaRasis menjadi sebuah simbol yang kuat untuk memobilisasi kemarahan publik."],[0,0,0],
+"Fungsionalis memandang permintaan maaf sebagai jalan menstabilkan kembali norma, pendekatan Konflik menyoroti kuasa kelompok dalam memonopoli moralitas, dan Interaksionis fokus pada kekuatan tagar sebagai konvensi dan simbolisasi perlawanan.","d");
+Q.forEach(function(q,i){q.n=i+1});
+
+/* ===== STATE ===== */
+var POINT=2, DURATION=90*60, LET="ABCDE";
+var st={ans:{},flag:{},cur:0,end:0,start:0,name:"",tick:null,done:false,filter:"all"};
+function $(id){return document.getElementById(id)}
+function show(id){["start","exam","result"].forEach(function(s){$(s).classList.toggle("hidden",s!==id)});window.scrollTo(0,0)}
+
+function answered(i){var q=Q[i],a=st.ans[i];if(a==null)return false;
+ if(q.t==="single")return true;
+ if(q.t==="mcma")return a.length>0;
+ return a.length===q.o.length&&a.every(function(x){return x===0||x===1})}
+function correct(i){var q=Q[i],a=st.ans[i];if(!answered(i))return false;
+ if(q.t==="single")return a===q.a;
+ if(q.t==="mcma")return a.length===q.a.length&&q.a.every(function(x){return a.indexOf(x)>-1});
+ return q.a.every(function(x,k){return a[k]===x})}
+
+function startExam(){
+ st={ans:{},flag:{},cur:0,start:Date.now(),end:Date.now()+DURATION*1000,name:$("nama").value.trim(),tick:null,done:false,filter:"all"};
+ $("peserta").textContent=st.name?("Peserta: "+st.name):"Peserta";
+ show("exam");render();clearInterval(st.tick);st.tick=setInterval(tick,500);tick();
+}
+function tick(){
+ var left=Math.max(0,Math.round((st.end-Date.now())/1000));
+ var m=Math.floor(left/60),s=left%60;
+ var el=$("timer");el.textContent=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+ el.classList.toggle("low",left<=300);
+ if(left<=0&&!st.done){finish(true)}
+}
+
+/* ===== RENDER EXAM ===== */
+function typeChip(q){return q.t==="single"?'<span class="chip">Pilihan Ganda</span>':q.t==="mcma"?'<span class="chip m">MCMA</span>':'<span class="chip k">Kategori</span>'}
+function instr(q){return q.t==="single"?"Pilih satu jawaban yang paling tepat.":q.t==="mcma"?"Pilihlah jawaban yang benar! Jawaban benar lebih dari satu.":"Tentukan pilihan "+CL[q.c][0]+" atau "+CL[q.c][1]+" untuk setiap pernyataan."}
+
+function qBody(i,mode){ /* mode: exam | review */
+ var q=Q[i],a=st.ans[i],h="";
+ if(q.s)h+='<div class="stim"><b class="l">'+ST[q.s].l.toUpperCase()+'</b>'+ST[q.s].t+'</div>';
+ h+='<div class="qtext">'+q.q+'</div><div class="instr">'+instr(q)+'</div>';
+ var rv=mode==="review";
+ if(q.t==="single"){
+  q.o.forEach(function(t,k){
+   var c="opt";
+   if(rv){c+=" static";if(k===q.a)c+=" right";else if(a===k)c+=" wrong"}
+   else if(a===k)c+=" sel";
+   h+='<button class="'+c+'"'+(rv?'':' onclick="pick('+i+','+k+')"')+'><span class="k">'+LET[k]+'</span><span>'+t+'</span></button>';
+  });
+ }else if(q.t==="mcma"){
+  q.o.forEach(function(t,k){
+   var on=a&&a.indexOf(k)>-1,isK=q.a.indexOf(k)>-1,c="opt";
+   if(rv){c+=" static";if(isK)c+=" right";else if(on)c+=" wrong"}
+   else if(on)c+=" sel";
+   h+='<button class="'+c+'"'+(rv?'':' onclick="toggle('+i+','+k+')"')+'><span class="k">'+(rv?(isK?"✓":(on?"✗":(k+1))):(on?"✓":(k+1)))+'</span><span>'+t+'</span></button>';
+  });
+ }else{
+  h+='<table class="cat"><tr><th>No</th><th style="text-align:left">Pernyataan</th><th>'+CL[q.c][0]+'</th><th>'+CL[q.c][1]+'</th></tr>';
+  q.o.forEach(function(t,k){
+   h+='<tr><td>'+(k+1)+'</td><td>'+t+'</td>';
+   for(var c=0;c<2;c++){
+    var cls="radio";
+    if(rv){var chosen=a&&a[k]===c,isK=q.a[k]===c;if(chosen&&isK)cls+=" right";else if(chosen)cls+=" wrong";else if(isK)cls+=" key"}
+    else if(a&&a[k]===c)cls+=" on";
+    h+='<td class="c">'+(rv?'<span class="'+cls+'"></span>':'<button onclick="cat('+i+','+k+','+c+')" aria-label="'+CL[q.c][c]+'"><span class="'+cls+'"></span></button>')+'</td>';
+   }
+   h+='</tr>';
+  });
+  h+='</table>';
+ }
+ return h;
+}
+function render(){
+ var i=st.cur,q=Q[i];
+ var h='<div class="qhead"><div><span class="qno">Soal '+q.n+' <span style="color:var(--muted);font-weight:500">dari '+Q.length+'</span></span>'+typeChip(q)+'</div>'+
+  '<button class="btn btn-ghost" style="padding:6px 14px;font-size:13px'+(st.flag[i]?';background:var(--warnbg);border-color:var(--warn)':'')+'" onclick="toggleFlag()">'+(st.flag[i]?'⚑ Ragu-ragu (batalkan)':'⚐ Tandai ragu-ragu')+'</button></div>';
+ h+=qBody(i,"exam");
+ h+='<div class="nav"><button class="btn btn-ghost" onclick="go('+(i-1)+')"'+(i===0?' disabled':'')+'>◀ Sebelumnya</button>'+
+  (i===Q.length-1?'<button class="btn btn-primary" onclick="openFinish()">Selesai Ujian ✔</button>':'<button class="btn btn-primary" onclick="go('+(i+1)+')">Selanjutnya ▶</button>')+'</div>';
+ $("qcard").innerHTML=h;
+ renderSide();
+}
+function renderSide(){
+ var g="",a=0,f=0;
+ for(var i=0;i<Q.length;i++){
+  var c="gb";if(answered(i)){c+=" ans";a++}if(st.flag[i]){c+=" flag";f++}if(i===st.cur)c+=" cur";
+  g+='<button class="'+c+'" onclick="go('+i+')">'+(i+1)+'</button>';
+ }
+ $("grid").innerHTML=g;$("sA").textContent=a;$("sB").textContent=Q.length-a;$("sF").textContent=f;
+ $("prog").style.width=(a/Q.length*100)+"%";
+}
+function go(i){if(i<0||i>=Q.length)return;st.cur=i;render();window.scrollTo({top:0,behavior:"smooth"})}
+function pick(i,k){st.ans[i]=k;render()}
+function toggle(i,k){var a=st.ans[i]||[],p=a.indexOf(k);if(p>-1)a.splice(p,1);else a.push(k);st.ans[i]=a;render()}
+function cat(i,k,c){var a=st.ans[i]||new Array(Q[i].o.length);a=a.slice();a[k]=c;
+ var out=[];for(var x=0;x<Q[i].o.length;x++)out[x]=a[x];st.ans[i]=out;render()}
+function toggleFlag(){st.flag[st.cur]=!st.flag[st.cur];render()}
+
+/* ===== FINISH ===== */
+function openFinish(){
+ var a=0;for(var i=0;i<Q.length;i++)if(answered(i))a++;
+ var f=Object.keys(st.flag).filter(function(k){return st.flag[k]}).length;
+ var warn=(Q.length-a>0)?'<p style="color:#b45309"><b>'+(Q.length-a)+' soal</b> belum dijawab.</p>':'<p style="color:var(--ok)">Semua soal sudah dijawab.</p>';
+ if(f)warn+='<p style="color:#b45309">'+f+' soal masih ditandai ragu-ragu.</p>';
+ $("modalBody").innerHTML='<h3>Akhiri ujian?</h3>'+warn+'<p style="color:var(--muted);font-size:14px">Setelah diakhiri, jawaban tidak dapat diubah dan pembahasan akan dibuka.</p><div class="row"><button class="btn btn-ghost" onclick="closeModal()">Kembali</button><button class="btn btn-danger" onclick="finish(false)">Ya, Akhiri</button></div>';
+ $("modal").classList.remove("hidden");
+}
+function closeModal(){$("modal").classList.add("hidden")}
+function finish(auto){
+ if(st.done)return;st.done=true;clearInterval(st.tick);closeModal();
+ var used=Math.min(DURATION,Math.round((Date.now()-st.start)/1000));
+ var ok=0,sk=0,by={single:{n:0,c:0},mcma:{n:0,c:0},cat:{n:0,c:0}};
+ Q.forEach(function(q,i){by[q.t].n++;if(!answered(i))sk++;if(correct(i)){ok++;by[q.t].c++}});
+ var score=ok*POINT,wr=Q.length-ok-sk;
+ $("rname").textContent=(st.name?st.name+" • ":"")+(auto?"Waktu habis":"Ujian selesai");
+ $("rscore").textContent=score;
+ var g=score>=85?"🏆 Sangat Baik":score>=70?"👍 Baik":score>=55?"🙂 Cukup":"📚 Perlu Ditingkatkan";
+ $("rgrade").textContent=g;
+ $("rc").textContent=ok;$("rw").textContent=wr;$("rs").textContent=sk;
+ var mm=Math.floor(used/60),ss=used%60;$("rt").textContent=mm+"m "+ss+"s";
+ var names={single:"Pilihan ganda sederhana",mcma:"Pilihan ganda kompleks (MCMA)",cat:"Pilihan ganda kompleks kategori"};
+ var t='<tr><th>Bentuk soal</th><th>Jumlah</th><th>Benar</th><th>Poin</th><th>Ketuntasan</th></tr>';
+ ["single","mcma","cat"].forEach(function(k){var b=by[k];
+  t+='<tr><td>'+names[k]+'</td><td>'+b.n+'</td><td>'+b.c+'</td><td><b>'+(b.c*POINT)+'</b> / '+(b.n*POINT)+'</td><td><div class="bar"><i style="width:'+(b.c/b.n*100)+'%"></i></div></td></tr>';});
+ t+='<tr><td><b>Total</b></td><td><b>'+Q.length+'</b></td><td><b>'+ok+'</b></td><td><b>'+score+'</b> / '+(Q.length*POINT)+'</td><td></td></tr>';
+ t+='<tr><td colspan="5" style="color:var(--muted);font-size:12.5px;border:0">Rubrik: 2 poin per soal bila jawaban benar seluruhnya; salah sebagian atau kosong = 0. Predikat: ≥85 Sangat Baik, 70–84 Baik, 55–69 Cukup, &lt;55 Perlu Ditingkatkan.</td></tr>';
+ $("rub").innerHTML=t;
+ var rg="";Q.forEach(function(q,i){var c=!answered(i)?"skip":correct(i)?"ok":"no";rg+='<button class="gb '+c+'" onclick="jump('+i+')">'+(i+1)+'</button>'});
+ $("rgrade").title="";$("rgrid").innerHTML=rg;
+ st.filter="all";setFilter("all");
+ show("result");
+}
+function status(i){return !answered(i)?"skip":correct(i)?"ok":"no"}
+function setFilter(f){
+ st.filter=f;
+ Array.prototype.forEach.call($("filters").children,function(b){b.classList.toggle("on",b.getAttribute("data-f")===f)});
+ var h="";
+ Q.forEach(function(q,i){
+  var s=status(i);if(f!=="all"&&f!==s)return;
+  var label=s==="ok"?"Benar +"+POINT:s==="no"?"Salah 0":"Tidak dijawab 0";
+  h+='<div class="rv '+s+'" id="rv'+i+'"><div class="rvh"><div><span class="qno">Soal '+q.n+'</span>'+typeChip(q)+'</div><span class="pts '+s+'">'+label+'</span></div>'+qBody(i,"review")+
+   '<div class="keybox"><b>Kunci jawaban:</b> '+keyText(q)+'</div>'+
+   '<div class="pemb"><b>Pembahasan:</b> '+q.e+'</div>'+(q.note?'<div class="note"><b>Catatan:</b> '+q.note+'</div>':'')+'</div>';
+ });
+ $("review").innerHTML=h||'<div class="box" style="text-align:center;color:var(--muted)">Tidak ada soal pada kategori ini.</div>';
+}
+function keyText(q){
+ if(q.t==="single")return LET[q.a]+". "+q.o[q.a];
+ if(q.t==="mcma")return q.a.map(function(x){return "("+(x+1)+")"}).join(", ");
+ return q.a.map(function(x,k){return (k+1)+" ("+CL[q.c][x]+")"}).join(", ");
+}
+function jump(i){st.filter="all";setFilter("all");var el=$("rv"+i);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}
+$("filters").addEventListener("click",function(e){var f=e.target.getAttribute("data-f");if(f)setFilter(f)});
+function restart(){show("start")}
+document.addEventListener("keydown",function(e){
+ if($("exam").classList.contains("hidden")||!$("modal").classList.contains("hidden"))return;
+ if(e.key==="ArrowRight")go(st.cur+1);else if(e.key==="ArrowLeft")go(st.cur-1);
+});
+</script>
+</body>
+</html>
